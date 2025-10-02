@@ -1,5 +1,5 @@
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.border
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -75,7 +75,7 @@ fun PagAvaliacao(navController: NavController) {
                         isSelected = selected == estado,
                         onClick = {
                             selected = estado
-                            navController.navigate("questionScreen")
+                            navController.navigate("home")
                         }
                     )
                 }
@@ -100,11 +100,11 @@ fun EstadoButton(
                 scaleX = scale
                 scaleY = scale
             }
-            .shadow(8.dp, shape = CircleShape, ambientColor = shadowColor)
-            .border(2.dp, shadowColor, shape = CircleShape),
+            .shadow(8.dp, shape = CircleShape, ambientColor = shadowColor),
+
         shape = CircleShape,
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
-        colors = ButtonDefaults.buttonColors(br.com.fiap.softekkreden.ui.theme.PurpleGrey40)
+
     ) {
         Text(text = texto)
     }

@@ -49,13 +49,13 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
+            .padding(20.dp),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Login", style = MaterialTheme.typography.headlineMedium)
+        Text("Login", modifier = Modifier.align(Alignment.CenterHorizontally).padding(0.dp,40.dp,0.dp),style = MaterialTheme.typography.headlineMedium)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         OutlinedTextField(
             value = username,
@@ -76,13 +76,20 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = { viewModel.login(username, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Entrar")
+        }
+        Spacer(modifier = Modifier.height(3.dp))
+        Button(
+            onClick = { navController.navigate("Register") },
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Text("Cadastrar")
         }
 
         if (loginResult == "ERRO") {

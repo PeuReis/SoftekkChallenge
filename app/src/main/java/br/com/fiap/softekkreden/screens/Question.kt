@@ -39,38 +39,20 @@ data class Pergunta(
 )
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Questionario(
-    perguntas: List<Pergunta>,
-    onFinalizado: (respostas: List<String>) -> Unit
-) {
-    var perguntaAtualIndex by remember { mutableIntStateOf(0) }
-    val respostas = remember { mutableStateListOf<String>() }
+fun QuestionsScreen(viewModel: QuestionsViewModel = viewModel()) {
+    val questions by viewModel.questions.observeAsState(emptyList())
 
-    AnimatedContent(
-        targetState = perguntaAtualIndex,
-        transitionSpec = {
-            slideInVertically { it } + fadeIn() with
-                    slideOutVertically { -it } + fadeOut()
-        },
-        label = "PerguntaAnimada"
-    ) { index ->
-        if (index < perguntas.size) {
-            val pergunta = perguntas[index]
-            PerguntaComOpcoesAnimada(
-                pergunta = pergunta.texto,
-                opcoes = pergunta.opcoes,
-                onRespostaSelecionada = { resposta ->
-                    respostas.add(resposta)
-                    if (index < perguntas.size - 1) {
-                        perguntaAtualIndex++
-                    } else {
-                        onFinalizado(respostas.toList())
-                    }
-                }
-            )
+    LaunchedEffect(Unit) {
+        viewModel.carregarQuestions()
+    }
+
+    LazyColumn {
+        items(questions) { question ->
+            Text("${question.id}: ${question.pergunta}")
         }
     }
 }
+
 @Composable
 fun PerguntaComOpcoesAnimada(
     pergunta: String,
@@ -121,37 +103,5 @@ fun BotaoResposta(texto: String, aoClicar: () -> Unit) {
     ) {
         Text(text = texto)
     }
-}
-@SuppressLint("SuspiciousIndentation")
-@Composable
-fun PagQuestionario(navController: NavController) {
-    val listaPerguntas = listOf(
-        Pergunta("Como voce avalia a sua carga de trabalho?", listOf("Muito Leve", "Leve", "média", "Alta", "Muito Alta")),
-        Pergunta("Sua carga de trabalho afeta sua qualidade de vida?", listOf("Não", "Raramente", "Às Vezes", "Frequentemente", "Sempre")),
-        Pergunta("Você trabalha além do seu horário regular?", listOf("Não", "Raramente", "Às Vezes", "Frequentemente", "Sempre")),
-        Pergunta("Você tem apresentado sintomas como insônia, irritabilidade ou cansaço extremo?", listOf("Nunca", "Raramente", "Às Vezes", "Frequentemente", "Sempre")),
-        Pergunta("Você sente que sua saúde mental prejudica sua produtividade no trabalho?", listOf("Nunca", "Raramente", "Às Vezes", "Frequentemente", "Sempre")),
-        Pergunta("Como está o seu relacionamento com seu chefe numa escala de 1 a 5? (Sendo 01 - ruim e 05 - Ótimo)", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Como está o seu relacionamento com seus colegas de trabalho numa escala de 1 a 5? (Sendo 01 - ruim e 05 - Ótimo)", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Sinto que sou tratado(a) com respeito pelos meus colegas de trabalho.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Consigo me relacionar de forma saudável e colaborativa com minha equipe.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Tenho liberdade para expressar minhas opiniões sem medo de retaliações.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Me sinto acolhido(a) a parte do time onde trabalho.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Sinto que existe espírito de cooperação entre os colaboradores.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Recebo orientações claras e objetivas sobre minhas atividades e responsabilidades.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Sinto que posso me comunicar abertamente com minha liderança.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("As informações importantes circulam de forma eficiente dentro da empresa.", listOf("1", "2", "3", "4", "5")),
-        Pergunta(" Tenho clareza sobre as metas e os resultados esperados de mim.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Minha liderança demonstra interesse pelo meu bem-estar no trabalho", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Minha liderança está disponível para me ouvir quando necessário.", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Me sinto confortável para reportar problemas ou dificuldades ao meu líder", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Minha liderança reconhece minhas entregas e esforços", listOf("1", "2", "3", "4", "5")),
-        Pergunta("Existe confiança e transparência na relação com minha liderança", listOf("1", "2", "3", "4", "5")),
-
-        )
-
-        Questionario(perguntas = listaPerguntas) { respostas ->
-            navController.navigate("dashboards")
-        }
 }
 

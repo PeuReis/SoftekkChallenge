@@ -21,7 +21,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-
+import br.com.fiap.softekkreden.screens.HomePage
+import br.com.fiap.softekkreden.screens.RegisterScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -53,11 +54,17 @@ class MainActivity : ComponentActivity() {
                         composable(route = "Login") {
                             LoginScreen(navController)
                         }
+                        composable(route = "Register") {
+                            RegisterScreen(navController)
+                        }
                         composable(route = "emojiScreen") {
                             PagAcompanhamento(navController)
                         }
                         composable(route = "questionDiaryScreen") {
                             PagAvaliacao(navController)
+                        }
+                        composable(route = "home") {
+                            HomePage(navController)
                         }
                         composable(route = "questionScreen") {
                             PagQuestionario(navController)
