@@ -1,6 +1,6 @@
 package br.com.fiap.softekkreden.model
 
-// Inside your LoginViewModel.kt
+
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
