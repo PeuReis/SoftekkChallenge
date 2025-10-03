@@ -1,36 +1,31 @@
-import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 data class Pergunta(
@@ -39,7 +34,7 @@ data class Pergunta(
 )
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun QuestionsScreen(viewModel: QuestionsViewModel = viewModel()) {
+fun Questions(navController: NavController, viewModel: QuestionsViewModel = viewModel()) {
     val questions by viewModel.questions.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
@@ -48,7 +43,7 @@ fun QuestionsScreen(viewModel: QuestionsViewModel = viewModel()) {
 
     LazyColumn {
         items(questions) { question ->
-            Text("${question.id}: ${question.pergunta}")
+            Text("${question.id}: ${question.text}")
         }
     }
 }

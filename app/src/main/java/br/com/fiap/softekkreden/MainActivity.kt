@@ -4,8 +4,9 @@ package br.com.fiap.softekkreden
 import LoginScreen
 import PagAcompanhamento
 import PagAvaliacao
-import PagQuestionario
+import Questions
 import PagVizu
+import QuestionsViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -67,7 +68,7 @@ class MainActivity : ComponentActivity() {
                             HomePage(navController)
                         }
                         composable(route = "questionScreen") {
-                            PagQuestionario(navController)
+                            Questions(navController, viewModel = QuestionsViewModel())
                         }
                         composable(route = "dashboards") {
                             PagVizu(navController)

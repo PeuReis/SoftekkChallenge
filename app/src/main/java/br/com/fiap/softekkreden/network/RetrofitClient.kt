@@ -1,3 +1,6 @@
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 object RetrofitClient {
     private const val BASE_URL = "http://localhost:8080/api/" // se rodar local, no emulador Android
 

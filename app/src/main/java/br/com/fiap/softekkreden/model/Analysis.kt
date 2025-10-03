@@ -4,6 +4,6 @@ data class Analysis(
     val category: String,
     val score: String,
     val percentage: String,
-    val meaning: String
-    val note: string
+    val meaning: String,
+    val note: String
 )
