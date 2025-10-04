@@ -45,7 +45,7 @@ fun HomePage(navController: NavController,
             }
             Spacer(modifier = Modifier.size(16.dp))
             Button(
-                onClick = { navController.navigate("dasboards") },
+                onClick = { navController.navigate("dashboards") },
                 modifier = Modifier
                     .size(width = 150.dp, height = 50.dp),
 

@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -19,34 +17,57 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.fiap.softekkreden.utils.GuidManager
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
-data class Pergunta(
-    val texto: String,
-    val opcoes: List<String>
-)
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Questions(navController: NavController, viewModel: QuestionsViewModel = viewModel()) {
+fun Questions(navController: NavController,viewModel: QuestionsViewModel = viewModel()) {
     val questions by viewModel.questions.observeAsState(emptyList())
+    var currentIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
         viewModel.carregarQuestions()
     }
 
-    LazyColumn {
-        items(questions) { question ->
-            Text("${question.id}: ${question.text}")
-        }
+    if (questions.isNotEmpty()) {
+        val question = questions[currentIndex]
+        val dataAtual = YearMonth.now()
+        val formatador = DateTimeFormatter.ofPattern("MM/yyyy")
+        val dataFormatada = dataAtual.format(formatador)
+        val context = LocalContext.current
+        val guid = GuidManager.getOrCreateGuid(context)
+
+        PerguntaComOpcoesAnimada(
+            pergunta = question.text,
+            opcoes = question.alternatives,
+            onRespostaSelecionada = { resposta ->
+                viewModel.enviarResposta(guid,Answer( questionId = question.id, selectedAlternative = resposta, date = dataFormatada))
+                if (currentIndex < questions.lastIndex) {
+                    currentIndex++
+                } else {
+                    // se acabou, pode navegar para outra tela, mostrar msg final, etc
+                    navController.navigate("home")
+                }
+            }
+        )
+    } else {
+        Text("Carregando perguntas...")
     }
+
 }
+
 
 @Composable
 fun PerguntaComOpcoesAnimada(

@@ -7,11 +7,12 @@ interface ApiService {
     fun getQuestions(): Call<List<Question>>
 
     @POST("questions/answer")
-    fun answer(@Body answer: Answer): Call<Answer>
+    fun answer(@Header ("X-Device-ID") deviceId:String,@Body answer: Answer): Call<Answer>
 
     @GET("analysis")
-    fun getRelatorio(
+    fun getAnalysis(
+        @Header ("X-Device-ID") deviceId:String,
         @Query("year") year: Int,
         @Query("month") month: Int
-    ): Call<Analysis>
+    ): Call<List<Analysis>>
 }

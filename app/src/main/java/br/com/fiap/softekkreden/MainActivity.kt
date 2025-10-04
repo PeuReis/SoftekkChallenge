@@ -1,13 +1,9 @@
 package br.com.fiap.softekkreden
 
-
-import LoginScreen
-import PagAcompanhamento
-import PagAvaliacao
 import Questions
-import PagVizu
-import QuestionsViewModel
+import Estatistic
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,13 +19,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.softekkreden.screens.HomePage
-import br.com.fiap.softekkreden.screens.RegisterScreen
+
+import br.com.fiap.softekkreden.utils.GuidManager
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val guid = GuidManager.getOrCreateGuid(this)
+        Log.d("APP_GUID", "Device GUID: $guid")
         setContent {
             val navController = rememberNavController()
 
@@ -50,28 +49,17 @@ class MainActivity : ComponentActivity() {
                 {
 
 
-                    NavHost(navController = navController, startDestination = "Login") {
+                    NavHost(navController = navController, startDestination = "home") {
 
-                        composable(route = "Login") {
-                            LoginScreen(navController)
-                        }
-                        composable(route = "Register") {
-                            RegisterScreen(navController)
-                        }
-                        composable(route = "emojiScreen") {
-                            PagAcompanhamento(navController)
-                        }
-                        composable(route = "questionDiaryScreen") {
-                            PagAvaliacao(navController)
-                        }
+
                         composable(route = "home") {
                             HomePage(navController)
                         }
                         composable(route = "questionScreen") {
-                            Questions(navController, viewModel = QuestionsViewModel())
+                            Questions(navController)
                         }
                         composable(route = "dashboards") {
-                            PagVizu(navController)
+                            Estatistic(navController)
                         }
 
                     }
